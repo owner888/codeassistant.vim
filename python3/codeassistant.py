@@ -25,7 +25,7 @@ def get_config():
             "url": "http://localhost:11434/api/chat",
             "token": None,
             "token-env": None,  # Token from environment variables - This must contain the variable name
-            "rag": False,  # Disabled by default to keep compatibility
+            "rag": False,       # Disabled by default to keep compatibility
             "chunk_size": 500,  # Used for RAG
             "rag_model": "deepseek-coder:1.3b",
         }
@@ -198,6 +198,22 @@ class AutoComplete:
         # 再调用定时器
         vim.command("call ScheduleAsyncWrite()")
 
+    def exec_prompt333(self) -> None:
+        raw_data = vim.vars["SomeData"]
+        data = json.loads(raw_data)
+        start_line = data["start_line"]
+        end_line = data["end_line"]
+        prompt = data["prompt"]
+        replace = data["replace"]
+        use_rag = data["use_rag"]
+        self.exec_prompt(
+            start_line=start_line,
+            end_line=end_line,
+            prompt=prompt,
+            replace=replace,
+            use_rag=use_rag,
+        )
+
     def exec_prompt(self, start_line, end_line, prompt, replace=False, use_rag=False) -> None:
         buffer_lines = vim.current.buffer
         prompt = prompt + "\n" + self.get_selection(buffer_lines, start_line, end_line)
@@ -243,13 +259,22 @@ class AutoComplete:
 
     def autocomplete(self, start_line, end_line) -> None:
         prompt = "\nTask: Continue the implementation of this piece of code: "
-        self.exec_prompt(
-            start_line=start_line,
-            end_line=end_line,
-            prompt=prompt,
-            replace=True,
-            use_rag=True,
-        )
+        data = {
+            "start_line": start_line,
+            "end_line": end_line,
+            "prompt": prompt,
+            "replace": True,
+            "use_rag": True,
+        }
+        vim.vars["SomeData"] = json.dumps(data)
+        vim.command("call PromptAsync()")
+        # self.exec_prompt(
+        #     start_line=start_line,
+        #     end_line=end_line,
+        #     prompt=prompt,
+        #     replace=True,
+        #     use_rag=True,
+        # )
         # vim.async_call(
         #     self.exec_prompt,
         #     start_line=start_line,
