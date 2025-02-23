@@ -16,7 +16,7 @@ To comment a piece of code, select the lines (in visual mode) and call `:'<,'>Co
 
 ## Requirements
 Requires a server for inference vim with python3 support.
-An example of server can be [ollama](https://ollama.com) (for local inference), or you can also use remote models (e.g., [groq](groq.com)).
+An example of server can be [ollama](https://ollama.com) (for local inference), or you can also use remote models (e.g., [groq](https://groq.com)).
 
 ## Configuration
 The default model is `deepseek-coder:6.7b-instruct`, you can change it by editing the project-wise file: `.codeassistant_config.json`, by changing the `model_name` value.
@@ -30,7 +30,7 @@ You can enable RAG by switching the `rag` field in the config file, and choosing
 First, install ollama from [https://ollama.com/](https://ollama.com/),
 then, install the plugin with:
 ```
-Plug 'leocus/codeassistant.vim'
+Plug 'owner888/codeassistant.vim'
 ```
 
 ## Disclaimer
